@@ -28,13 +28,14 @@ export function PostDetail({ post }) {
     fetchComments
   );
 
-  const deleteMutation = useMutation(deletePost);
+  const deleteMutation = useMutation((postId) => deletePost(postId));
+  const updateMutation = useMutation((postId) => updatePost(postId));
 
   return (
     <>
       <h3 style={{ color: "blue" }}>{post.title}</h3>
       <button onClick={deleteMutation.mutate(post.id)}>Delete</button>{" "}
-      <button>Update title</button>
+      <button onClick={updateMutation.mutate(post.id)}>Update title</button>
       {deleteMutation.isLoading && (
         <p style={{ color: "purple" }}>deleting the post...</p>
       )}
