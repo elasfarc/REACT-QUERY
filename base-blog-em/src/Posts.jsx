@@ -28,7 +28,7 @@ export function Posts() {
     if (currentPage === maxPostPage) return;
     let newPage = currentPage + 1;
     queryClient.prefetchQuery(["posts", newPage], fetchPosts);
-  });
+  }, [currentPage, queryClient]);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;

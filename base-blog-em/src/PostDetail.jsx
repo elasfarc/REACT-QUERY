@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 async function fetchComments({ queryKey: [key, postId] }) {
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
@@ -28,10 +28,22 @@ export function PostDetail({ post }) {
     fetchComments
   );
 
+  const deleteMutation = useMutation(deletePost);
+
   return (
     <>
       <h3 style={{ color: "blue" }}>{post.title}</h3>
-      <button>Delete</button> <button>Update title</button>
+      <button onClick={deleteMutation.mutate(post.id)}>Delete</button>{" "}
+      <button>Update title</button>
+      {deleteMutation.isLoading && (
+        <p style={{ color: "purple" }}>deleting the post...</p>
+      )}
+      {deleteMutation.isError && (
+        <p style={{ color: "red" }}>Error deleting the post</p>
+      )}
+      {deleteMutation.isSuccess && (
+        <p style={{ color: "green" }}>post is deleted successfully</p>
+      )}
       <p>{post.body}</p>
       <h4>Comments</h4>
       {isLoading ? (
